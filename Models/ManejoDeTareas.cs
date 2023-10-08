@@ -38,7 +38,7 @@ public class ManejoDeTareas
         }
     }
 
-    public void ActualizarTarea(Tarea modificada)
+    public bool ActualizarTarea(Tarea modificada)
     {
         List<Tarea> listado = accesoDatos.LeerTareas();
         if (listado.Exists(x => x.Id == modificada.Id))
@@ -47,16 +47,21 @@ public class ManejoDeTareas
             auxTarea = modificada;
 
             accesoDatos.Guardar(listado);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
-    public bool EliminarTarea(Tarea eliminada)
+    public bool EliminarTarea(int idBuscado)
     {
         List<Tarea> listado = accesoDatos.LeerTareas();
         bool control = false;
-        if (listado.Exists(x => x.Id == eliminada.Id))
+        if (listado.Exists(x => x.Id == idBuscado))
         {
-            Tarea auxiliar = listado.Find(X => X.Id == eliminada.Id);
+            Tarea auxiliar = listado.Find(X => X.Id == idBuscado);
             control = listado.Remove(auxiliar);
         }
 
