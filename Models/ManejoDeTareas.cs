@@ -62,7 +62,9 @@ public class ManejoDeTareas
         if (listado.Exists(x => x.Id == idBuscado))
         {
             Tarea auxiliar = listado.Find(X => X.Id == idBuscado);
-            control = listado.Remove(auxiliar);
+
+            listado.RemoveAt(auxiliar.Id - 1);
+            control = true;
         }
 
         return control;
