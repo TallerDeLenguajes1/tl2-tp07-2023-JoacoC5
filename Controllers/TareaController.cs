@@ -50,7 +50,7 @@ public class TareaController : ControllerBase
         }
     }
 
-    [HttpPut("Actualizar tarea")] //NO SE REFLEJA EL CAMBIO
+    [HttpPut("ActualizarTarea")]
     public ActionResult<Tarea> ActualizarTarea(Tarea modificada)
     {
         bool control = manejoTareas.ActualizarTarea(modificada);
@@ -65,18 +65,11 @@ public class TareaController : ControllerBase
         }
     }
 
-    [HttpDelete("EliminarTarea")] //NO REALIZA EFECTO
-    public ActionResult BorrarTarea(int id)
+    [HttpDelete("EliminarTarea")] //NO REALIZA EFECTO PERMANENTE
+    public ActionResult<List<Tarea>> BorrarTarea(int id)
     {
-        bool control = manejoTareas.EliminarTarea(id);
-        if (control)
-        {
-            return Ok();
-        }
-        else
-        {
-            return BadRequest();
-        }
+        List<Tarea> listado = manejoTareas.EliminarTarea(id);
+        return Ok(listado);
     }
 
     [HttpGet("GetTareas")]
