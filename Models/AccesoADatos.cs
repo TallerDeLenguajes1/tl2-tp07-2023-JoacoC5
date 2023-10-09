@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using System.Text;
 using EspacioTarea;
 using EspacioTarea;
 
@@ -10,25 +11,33 @@ public class AccesoADatos
     public List<Tarea> LeerTareas()
     {
         string archivo = "Tareas.json";
+        List<Tarea> tareas = new List<Tarea>();
+        string jsonString;
         if (File.Exists(archivo))
         {
-            string jsonString = File.ReadAllText(archivo);
-            List<Tarea> tareas = JsonSerializer.Deserialize<List<Tarea>>(jsonString);
-            return tareas;
+            using (var archivoOpen = new FileStream(archivo, FileMode.Open))
+            {
+                using (var strReader = new StreamReader(archivoOpen))
+                {
+                    jsonString = strReader.ReadToEnd();
+                    archivoOpen.Close();
+                }
+            }
+            tareas = JsonSerializer.Deserialize<List<Tarea>>(jsonString);
+
         }
-        else
-        {
-            return null;
-        }
+
+        return tareas;
     }
 
     public void Guardar(List<Tarea> tareas)
     {
-        if (tareas != null)
+        string archivo = "Tareas.json";
+        if (!File.Exists(archivo))
         {
-            string archivo = "Tareas.json";
-            string listadoTareas = JsonSerializer.Serialize(tareas);
-            File.WriteAllText(archivo, listadoTareas);
+            File.Create(archivo).Close();
         }
+        string listadoTareas = JsonSerializer.Serialize(tareas);
+        File.WriteAllText(archivo, listadoTareas);
     }
 }

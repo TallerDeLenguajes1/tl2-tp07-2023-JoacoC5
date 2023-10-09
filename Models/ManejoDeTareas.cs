@@ -62,9 +62,10 @@ public class ManejoDeTareas
         List<Tarea> listado = accesoDatos.LeerTareas();
         if (listado.Exists(x => x.Id == idBuscado))
         {
-            Tarea auxiliar = listado.Find(X => X.Id == idBuscado);
+            Tarea auxiliar = listado.FirstOrDefault(X => X.Id == idBuscado);
 
             listado.Remove(auxiliar);
+            accesoDatos.Guardar(listado);
         }
 
         return listado;
